@@ -40,4 +40,10 @@ Route::get('/omsets/rekap', [OmsetController::class, 'rekapBulanan'])->name('oms
 
 use App\Http\Controllers\ProjectProgressController;
 
-Route::resource('project_progress', ProjectProgressController::class);
+// Route untuk Project Progress
+Route::get('/project_progress', [ProjectProgressController::class, 'index'])->name('project_progress.index'); // Tampilkan semua data
+Route::get('/project_rogress/create', [ProjectProgressController::class, 'create'])->name('project_progress.create'); // Form tambah data
+Route::post('/project_progress', [ProjectProgressController::class, 'store'])->name('project_progress.store'); // Simpan data baru
+Route::get('/project_progress/{id}/edit', [ProjectProgressController::class, 'edit'])->name('project_progress.edit'); // Form edit data
+Route::put('/project_progress/{id}', [ProjectProgressController::class, 'update'])->name('project_progress.update'); // Update data
+Route::delete('/project_progress/{id}', [ProjectProgressController::class, 'destroy'])->name('project_progress.destroy'); // Hapus data

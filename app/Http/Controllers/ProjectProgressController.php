@@ -1,69 +1,69 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\ProjectProgress;
 use App\Models\Omset;
-use App\Models\User;
+use App\Models\User1;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class ProjectProgressController extends Controller
 {
     public function index()
     {
+        // Ambil semua data project progress dengan relasi omset dan teknisi
         $progress = ProjectProgress::with('omset', 'teknisi')->get();
         return view('project_progress.index', compact('progress'));
     }
 
     public function create()
     {
+        // Ambil semua data omset dan teknisi untuk form
         $omset = Omset::all();
-        $teknisi = User::where('role', 'teknisi')->get();
+        $teknisi = User1::where('role', 'teknisi')->get();
         return view('project_progress.create', compact('omset', 'teknisi'));
     }
+
     public function store(Request $request)
     {
-        dd($request->all());
+        
         // Validasi input dari form
-        $request->validate([
-            'omset_id' => 'required|exists:omsets,id', // Validasi omset_id
-            'teknisi_id' => 'required|exists:teknisis,id', // Validasi teknisi_id
-            'tgl_setting' => 'required|date',
-            'dokumentasi' => 'nullable|file|mimes:jpg,png,pdf|max:2048', // Validasi file
+        $validated = $request->validate([
+            'omset_id' => 'required|exists:omsets,id_omset', // Validasi omset_id harus ada di tabel omsets
+            'teknisi_id' => 'required|exists:users,id_user', // Validasi teknisi_id harus ada di tabel users
+            'tgl_setting' => 'required|date', // Pastikan tgl_setting adalah tanggal valid
+            'dokumentasi' => 'nullable|file|mimes:jpg,png,pdf|max:2048', // Validasi file jika ada
         ]);
-    
-        // Debug: Periksa data yang dikirimkan
-        Log::debug(message: 'Omset ID: ' . $request->input('omset_id'));  // Menggunakan input() daripada langsung akses property
-        Log::debug(message: 'Teknisi ID: ' . $request->input('teknisi_id'));  // Menggunakan input() daripada langsung akses property
-        Log::debug(message: 'Tgl Setting: ' . $request->input('tgl_setting'));  // Menggunakan input() daripada langsung akses property
 
-        // Cek apakah file dokumentasi ada dan ambil nama asli file
-        if ($request->hasFile('dokumentasi')) {
-            Log::debug(message: 'Dokumentasi: ' . $request->file('dokumentasi')->getClientOriginalName());
-        }
-    
-        // Menyimpan file dokumentasi jika ada
+        // Debug: Log data setelah validasi berhasil
+        Debugbar::info('Validated Data:', $validated);
+
+        // Simpan file dokumentasi jika ada
         $dokumentasiPath = null;
         if ($request->hasFile('dokumentasi')) {
             $dokumentasiPath = $request->file('dokumentasi')->store('public/dokumentasi');
+            Debugbar::info('Dokumentasi path:', $dokumentasiPath);
         }
-    
-        // Menyimpan data progress project ke database
+
+        // Simpan data ke database
         ProjectProgress::create([
-            'omset_id' => $request->input('omset_id'),
-            'teknisi_id' => $request->input('teknisi_id'),
-            'tgl_setting' => $request->input('tgl_setting'),
+            'omset_id' => $validated['omset_id'],
+            'teknisi_id' => $validated['teknisi_id'],
+            'tgl_setting' => $validated['tgl_setting'],
             'dokumentasi' => $dokumentasiPath,
-            'status' => 'pending',  // Anda bisa mengubah status sesuai kebutuhan
+            'status' => 'waitinglist', // Status default
         ]);
-    
+
         // Redirect setelah sukses
         return redirect()->route('project_progress.index')->with('success', 'Data berhasil disimpan!');
     }
 
     public function destroy($id)
     {
+        // Hapus data berdasarkan ID
         ProjectProgress::destroy($id);
         return redirect()->route('project_progress.index')->with('success', 'Project Progress berhasil dihapus!');
     }

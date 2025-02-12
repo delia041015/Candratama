@@ -14,11 +14,11 @@ class ProjectProgress extends Model
 
     public function omset()
     {
-        return $this->belongsTo(Omset::class, 'omset_id');
+        return $this->belongsTo(Omset::class, 'omset_id', 'id_omset'); // omset_id di tabel ini dan id_omset di tabel omsets
     }
 
     public function teknisi()
     {
-        return $this->belongsTo(User::class, 'teknisi_id');
+        return $this->belongsTo(User::class, 'teknisi_id', 'id_user'); // teknisi_id di tabel ini dan id_user di tabel users
     }
 }

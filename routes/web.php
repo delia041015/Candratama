@@ -41,3 +41,11 @@ Route::get('/omsets/rekap', [OmsetController::class, 'rekapBulanan'])->name('oms
 use App\Http\Controllers\ProjectProgressController;
 
 Route::resource('project_progress', ProjectProgressController::class);
+
+use App\Http\Controllers\SuratController;
+
+Route::get('/surat', [SuratController::class, 'index'])->name('surat.index');
+Route::get('/surat/form', [SuratController::class, 'create'])->name('surat.form');
+Route::get('surat/pdf/{id}', [SuratController::class, 'generatePDF'])->name('surat.generatePDF');
+Route::post('surat/store', [SuratController::class, 'store'])->name('surat.store');
+Route::get('/surat/{id}/update-status', [SuratController::class, 'updateStatus'])->name('surat.updateStatus');

@@ -40,6 +40,7 @@ Route::get('/omsets/rekap', [OmsetController::class, 'rekapBulanan'])->name('oms
 
 use App\Http\Controllers\ProjectProgressController;
 
+
 // Route untuk Project Progress
 Route::get('/project_progress', [ProjectProgressController::class, 'index'])->name('project_progress.index'); // Tampilkan semua data
 Route::get('/project_rogress/create', [ProjectProgressController::class, 'create'])->name('project_progress.create'); // Form tambah data
@@ -47,3 +48,14 @@ Route::post('/project_progress', [ProjectProgressController::class, 'store'])->n
 Route::get('/project_progress/{id}/edit', [ProjectProgressController::class, 'edit'])->name('project_progress.edit'); // Form edit data
 Route::put('/project_progress/{id}', [ProjectProgressController::class, 'update'])->name('project_progress.update'); // Update data
 Route::delete('/project_progress/{id}', [ProjectProgressController::class, 'destroy'])->name('project_progress.destroy'); // Hapus data
+
+Route::resource('project_progress', ProjectProgressController::class);
+
+use App\Http\Controllers\SuratController;
+
+Route::get('/surat', [SuratController::class, 'index'])->name('surat.index');
+Route::get('/surat/form', [SuratController::class, 'create'])->name('surat.form');
+Route::get('surat/pdf/{id}', [SuratController::class, 'generatePDF'])->name('surat.generatePDF');
+Route::post('surat/store', [SuratController::class, 'store'])->name('surat.store');
+Route::get('/surat/{id}/update-status', [SuratController::class, 'updateStatus'])->name('surat.updateStatus');
+

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -17,6 +16,7 @@
     <form action="{{ route('project_progress.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
+
         <select id="omset_id" name="omset_id" class="form-control" required>
             <option value="" selected>Pilih Klien</option>
             @foreach ($omset as $o)
@@ -26,36 +26,41 @@
             @endforeach
         </select>
 
+
+            <label for="omset_id" class="form-label">Nama Klien</label>
+            <select id="omset_id" name="omset_id" class="form-control" required>
+                <option value="" selected>Pilih Klien</option>
+                @foreach ($omset as $o)
+                    <option value="{{ $o->id }}">{{ $o->nama_klien }}</option>
+                @endforeach
+            </select>
+
         </div>
-        <div class="mb-3">
-            <label class="form-label">Alamat</label>
-            <input type="text" id="alamat" class="form-control" readonly>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Project</label>
-            <input type="text" id="project" class="form-control" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="tgl_setting" class="form-label">Tanggal Setting</label>
-            <input type="date" id="tgl_setting" name="tgl_setting" class="form-control" required>
-        </div>
+
         <div class="mb-3">
             <label for="teknisi_id" class="form-label">Teknisi</label>
             <select id="teknisi_id" name="teknisi_id" class="form-control" required>
-                <option value=""selected>Pilih Teknisi</option>
+                <option value="" selected>Pilih Teknisi</option>
                 @foreach ($teknisi as $t)
                     <option value="{{ $t->id }}">{{ $t->nama }}</option>
                 @endforeach
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="tgl_setting" class="form-label">Tanggal Setting</label>
+            <input type="date" id="tgl_setting" name="tgl_setting" class="form-control" required>
+        </div>
+
         <div class="mb-3">
             <label for="dokumentasi" class="form-label">Dokumentasi (Foto)</label>
             <input type="file" id="dokumentasi" name="dokumentasi" class="form-control">
         </div>
+
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="{{ route('project_progress.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
+
 
     <input type="hidden" name="omset_id" id="hidden_omset_id">
     <input type="hidden" name="teknisi_id" id="hidden_teknisi_id">

@@ -75,3 +75,71 @@ footer p {
     margin: 0;
     color: #555;
 }
+
+/* Di resources/css/app.css */
+@media print {
+    /* Menyembunyikan navbar dan sidebar */
+    .navbar, .sidebar, .footer, .no-print {
+        display: none !important;
+    }
+
+    /* Mengatur padding dan margin di PDF agar rapi */
+    body {
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Gambar logo dan layout surat agar rapi di PDF */
+    img {
+        width: 100px;
+        height: auto;
+    }
+
+    /* Jika ingin menyesuaikan layout surat lebih besar di PDF */
+    .surat-container {
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+    }
+
+    /* Layout surat lebih rapi */
+    h3, p {
+        margin: 0;
+        padding: 5px 0;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.surat-container {
+    padding: 10px;
+}
+
+.surat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.surat-header img {
+    width: 120px;
+    height: auto;
+}
+
+.surat-header .company-info {
+    text-align: left;
+}
+
+.tanda-tangan {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.tanda-tangan div {
+    text-align: center;
+    margin-top: 50px;
+}
